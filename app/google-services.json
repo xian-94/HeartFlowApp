@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "37614843284",
+    "project_id": "android-heart-flow",
+    "storage_bucket": "android-heart-flow.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37614843284:android:bc1305f6874119928ccb81",
+        "android_client_info": {
+          "package_name": "com.example.heartflowapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeq6ZfgH3Di6QadNPTAf2yFXcM2uTfy-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
