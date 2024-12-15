@@ -1,11 +1,11 @@
 package com.example.heartflowapp.view.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,14 +17,11 @@ import com.example.heartflowapp.model.Donor;
 import com.example.heartflowapp.model.SiteManager;
 import com.example.heartflowapp.model.User;
 import com.example.heartflowapp.model.UserRole;
-import com.example.heartflowapp.utils.AuthPagerAdapter;
+import com.example.heartflowapp.view.adapters.AuthPagerAdapter;
 import com.example.heartflowapp.controller.DatabaseManager;
 import com.example.heartflowapp.controller.ProgressManager;
 import com.example.heartflowapp.controller.AuthListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -104,57 +101,54 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
     // Handle sign up process
     @Override
     public void onSignUp(String role, String email, String password) {
+        TextView errorView = findViewById(R.id.error_message);
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Save user document
-                            FirebaseUser user = auth.getCurrentUser();
-                            if (user != null) {
-                                User newUser;
-                                if (role.equalsIgnoreCase(String.valueOf(UserRole.DONOR))) {
-                                    newUser = new Donor(user.getUid(), email, password);
-                                    handleSave("donor", user.getUid(), newUser);
-                                } else {
-                                    newUser = new SiteManager(user.getUid(), email, password);
-                                    handleSave("manager", user.getUid(), newUser);
-                                }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Save user document
+                        FirebaseUser user = auth.getCurrentUser();
+                        if (user != null) {
+                            User newUser;
+                            if (role.equalsIgnoreCase(String.valueOf(UserRole.DONOR))) {
+                                newUser = new Donor(user.getUid(), email, password);
+                                handleSave("donor", user.getUid(), newUser);
+                            } else {
+                                newUser = new SiteManager(user.getUid(), email, password);
+                                handleSave("manager", user.getUid(), newUser);
                             }
-                            // TODO: Navigate to next activity
-                            Toast.makeText(AuthActivity.this, "Sign up successfully", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            displayError(String.valueOf(task.getException()));
                         }
-                        ProgressManager.dismissProgress();
+                        // TODO: Navigate to next activity
+                        Toast.makeText(AuthActivity.this, "Sign up successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        displayError(errorView, String.valueOf(task.getException()));
                     }
+                    ProgressManager.dismissProgress();
                 });
     }
 
     // Display error message
-    private void displayError(String errorMessage) {
-        TextView errorView = findViewById(R.id.error_message);
+    private void displayError(TextView errorView, String errorMessage) {
+        errorView.clearComposingText();
         errorView.setText(errorMessage);
     }
 
 
     @Override
     public void onLogin(String email, String password) {
+        TextView errorView = findViewById(R.id.error_message_login);
         auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(AuthActivity.this, "Sign in successfully", Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = auth.getCurrentUser();
-                            // TODO: Navigate to main
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            displayError(String.valueOf(task.getException()));
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Toast.makeText(AuthActivity.this, "Sign in successfully", Toast.LENGTH_SHORT).show();
+                        FirebaseUser user = auth.getCurrentUser();
+                        // TODO: Navigate to main
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        displayError(errorView, String.valueOf(task.getException()));
                     }
+                    ProgressManager.dismissProgress();
                 });
 
     }
@@ -169,7 +163,7 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
 
             @Override
             public void onFailure(String message) {
-                displayError(message);
+                Log.e("Error", "Failed to save");
             }
         });
     }

@@ -8,31 +8,16 @@
     android:padding="20dp"
     tools:context=".view.fragments.SignUpFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/role_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp">
-
-        <AutoCompleteTextView
-            android:id="@+id/auto_complete_txt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="none"
-            android:labelFor="@+id/role_input"
-            android:text="@string/select_role" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/eEmail"
+        android:id="@+id/eEmail_login"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_email" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/ePassword"
+        android:id="@+id/ePassword_login"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,17 +26,19 @@
         android:inputType="textPassword" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/error_message"
+        android:id="@+id/error_message_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/design_default_color_error" />
 
     <Button
-        android:id="@+id/signup"
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_gravity="center"
-        android:text="@string/action_sign_up" />
+        android:layout_marginTop="10dp"
+        android:text="@string/action_sign_in" />
+
+
 </LinearLayout>

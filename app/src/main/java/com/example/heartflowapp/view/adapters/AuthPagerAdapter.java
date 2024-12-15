@@ -1,10 +1,11 @@
-package com.example.heartflowapp.utils;
+package com.example.heartflowapp.view.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.heartflowapp.view.fragments.LoginFragment;
 import com.example.heartflowapp.view.fragments.SignUpFragment;
 
 public class AuthPagerAdapter extends FragmentStateAdapter {
@@ -16,10 +17,10 @@ public class AuthPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 1:
+            case 0:
                 return new SignUpFragment();
-            case 2:
-                //TODO: Add Login fragment
+            case 1:
+                return new LoginFragment();
             default:
                 return new SignUpFragment();
         }
