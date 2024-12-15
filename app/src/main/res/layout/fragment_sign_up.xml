@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".view.authentication.SignUpFragment">
+    tools:context=".view.fragments.SignUpFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/role_input"

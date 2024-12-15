@@ -1,8 +1,8 @@
-package com.example.heartflowapp.utils;
+package com.example.heartflowapp.controller;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.example.heartflowapp.view.general.ProgressFragment;
+import com.example.heartflowapp.view.ui.ProgressFragment;
 
 public class ProgressManager {
     private static ProgressFragment progressFragment;

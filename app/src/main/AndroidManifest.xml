@@ -16,7 +16,7 @@
         android:theme="@style/Theme.HeartFlowApp"
         tools:targetApi="31">
         <activity
-            android:name=".view.authentication.AuthActivity"
+            android:name=".view.activities.AuthActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

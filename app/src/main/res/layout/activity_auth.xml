@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".view.authentication.AuthActivity">
+    tools:context=".view.activities.AuthActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
