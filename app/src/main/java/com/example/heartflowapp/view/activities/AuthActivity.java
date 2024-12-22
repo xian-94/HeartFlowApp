@@ -206,7 +206,7 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
 
     // Save user to database
     private void handleSave(String collection, String uid, User newUser) {
-        db.add(collection, uid, newUser, new DatabaseManager.NormalCallBack() {
+        db.update(collection, uid, newUser, new DatabaseManager.NormalCallBack() {
             @Override
             public void onSuccess() {
                 Toast.makeText(AuthActivity.this, "User registered successfully!", Toast.LENGTH_SHORT).show();

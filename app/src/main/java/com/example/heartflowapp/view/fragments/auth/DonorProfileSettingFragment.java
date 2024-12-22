@@ -187,7 +187,7 @@ public class DonorProfileSettingFragment extends Fragment {
 
     private <T> void saveUser(T user, String collection, String userId) {
         DatabaseManager db = new DatabaseManager();
-        db.add(collection, userId, user, new DatabaseManager.NormalCallBack() {
+        db.update(collection, userId, user, new DatabaseManager.NormalCallBack() {
             @Override
             public void onSuccess() {
                 Toast.makeText(getContext(), "Profile updated successfully!", Toast.LENGTH_SHORT).show();

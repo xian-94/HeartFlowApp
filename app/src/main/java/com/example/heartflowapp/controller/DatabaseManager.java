@@ -1,5 +1,6 @@
 package com.example.heartflowapp.controller;
 
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
@@ -25,8 +26,14 @@ public class DatabaseManager {
         void onFailure(String message);
     }
 
-    public <T> void add(String collection, String id, T data, NormalCallBack cb) {
+    public <T> void update(String collection, String id, T data, NormalCallBack cb) {
         db.collection(collection).document(id).set(data)
+                .addOnSuccessListener(l -> cb.onSuccess())
+                .addOnFailureListener(e -> cb.onFailure(e.getMessage()));
+    }
+
+    public <T> void add(String collection, T data, NormalCallBack cb) {
+        db.collection(collection).add(data)
                 .addOnSuccessListener(l -> cb.onSuccess())
                 .addOnFailureListener(e -> cb.onFailure(e.getMessage()));
     }
@@ -54,6 +61,10 @@ public class DatabaseManager {
                     }
                 })
                 .addOnFailureListener(e -> cb.onFailure(e.getMessage()));
+    }
+
+    public CollectionReference getRef(String collection) {
+        return db.collection(collection);
     }
 
 

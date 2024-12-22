@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.maps)
     implementation (libs.material.v190)
+    implementation(libs.places)
 
 
 

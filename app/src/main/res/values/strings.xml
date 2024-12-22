@@ -3,6 +3,7 @@
     <!-- General -->
     <string name="loading">Loading…</string>
     <string name="action_save">Save</string>
+    <string name="action_create">Create</string>
 
     <!-- Authentication description -->
     <string name="prompt_email">Enter email</string>
@@ -38,8 +39,15 @@
     <string name="label_site">Site</string>
     <string name="label_event">Events</string>
     <string name="label_profile">Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Manager view label -->
+    <string name="site_info">Site Information</string>
+    <string name="label_site_name">Site name</string>
+    <string name="prompt_site_name">Enter site name</string>
+    <string name="label_site_address">Site address</string>
+    <string name="address_choose">Open Map</string>
+    <string name="label_user_position">My Position</string>
+    <string name="no_site">No site information</string>
+    <string name="to_create">+ Create site</string>
 
 </resources>
