@@ -2,6 +2,7 @@
     <string name="app_name">HeartFlowApp</string>
     <!-- General -->
     <string name="loading">Loading…</string>
+    <string name="action_save">Save</string>
     <!-- Authentication description -->
     <string name="prompt_email">Enter email</string>
     <string name="prompt_password">Enter password</string>
@@ -11,8 +12,25 @@
     <string name="select_role">Select role</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_up">Sign up</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Profile description -->
+    <string name="person_details">Personal Details</string>
+    <string name="prompt_fullname">Enter full name</string>
+    <string name="label_fullname">Full name</string>
+    <string name="label_blood_type">Blood type</string>
+    <string name="a_plus">A+</string>
+    <string name="a_minus">A-</string>
+    <string name="b_plus">B+</string>
+    <string name="b_minus">B-</string>
+    <string name="o_plus">O+</string>
+    <string name="o_minus">O-</string>
+    <string name="ab_plus">AB+</string>
+    <string name="ab_minus">AB-</string>
+    <string name="label_gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="label_dob">D.O.B</string>
+    <string name="label_datepicker">Choose</string>
+    <string name="prompt_dob">D.O.B</string>
 
 
 </resources>

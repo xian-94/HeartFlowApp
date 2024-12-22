@@ -2,6 +2,9 @@ package com.example.heartflowapp.view.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.heartflowapp.R;
@@ -21,6 +25,7 @@ import com.example.heartflowapp.view.adapters.AuthPagerAdapter;
 import com.example.heartflowapp.controller.DatabaseManager;
 import com.example.heartflowapp.controller.ProgressManager;
 import com.example.heartflowapp.controller.AuthListener;
+import com.example.heartflowapp.view.fragments.DonorProfileSettingFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +41,7 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
     // Authentication
     private FirebaseAuth auth;
     private DatabaseManager db;
+
 
     // Check if the user is current signed in
     @Override
@@ -112,6 +118,7 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
                             if (role.equalsIgnoreCase(String.valueOf(UserRole.DONOR))) {
                                 newUser = new Donor(user.getUid(), email, password);
                                 handleSave("donor", user.getUid(), newUser);
+                                navigateToProfileSetup(role, user.getUid());
                             } else {
                                 newUser = new SiteManager(user.getUid(), email, password);
                                 handleSave("manager", user.getUid(), newUser);
@@ -166,6 +173,34 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
                 Log.e("Error", "Failed to save");
             }
         });
+    }
+
+    // Navigate to setup profile after signing up
+    private void navigateToProfileSetup(String role, String userId) {
+        Fragment fm = null;
+        if ("donor".equalsIgnoreCase(role)) {
+            fm = new DonorProfileSettingFragment();
+        }
+
+        Bundle args = new Bundle();
+        args.putString("USER_ID", userId);
+        args.putString("ROLE", role);
+        fm.setArguments(args);
+
+        showDetails();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.profile_setup_container, fm)
+                .commit();
+
+    }
+
+    private void showDetails() {
+        RelativeLayout authSection = findViewById(R.id.auth_section);
+        LinearLayout detailsSection = findViewById(R.id.details_section);
+        authSection.setVisibility(View.GONE);
+        detailsSection.setVisibility(View.VISIBLE);
     }
 
 

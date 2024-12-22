@@ -3,13 +3,9 @@ package com.example.heartflowapp.model;
 import java.util.Date;
 
 public class Donor extends User {
-    enum Gender {
-        MALE,
-        FEMALE
-    }
 
     private Gender gender;
-    private Date dob;
+    private String dob;
     private BloodType type;
 
     // Use to retrieve nearby sites
@@ -34,7 +30,7 @@ public class Donor extends User {
         return type;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
@@ -48,5 +44,13 @@ public class Donor extends User {
 
     public String getCity() {
         return city;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public void setType(BloodType type) {
+        this.type = type;
     }
 }

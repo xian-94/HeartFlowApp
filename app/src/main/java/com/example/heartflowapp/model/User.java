@@ -1,9 +1,8 @@
 package com.example.heartflowapp.model;
 
-public abstract class User {
+public class User {
     private String userId;
-    private String firstName;
-    private String lastName;
+private String fullName;
     private String password;
     private String email; // Need validation
     private String phone; // Need validation
@@ -28,13 +27,10 @@ public abstract class User {
         return email;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
 
     public String getPassword() {
         return password;
@@ -52,13 +48,10 @@ public abstract class User {
         return role;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFullName(String name) {
+        this.fullName = name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public void setPassword(String password) {
         this.password = password;
