@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.heartflowapp.view.fragments.LoginFragment;
-import com.example.heartflowapp.view.fragments.SignUpFragment;
+import com.example.heartflowapp.view.fragments.auth.LoginFragment;
+import com.example.heartflowapp.view.fragments.auth.SignUpFragment;
 
 public class AuthPagerAdapter extends FragmentStateAdapter {
     public AuthPagerAdapter(@NonNull FragmentActivity fragmentActivity) {

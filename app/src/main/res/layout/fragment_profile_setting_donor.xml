@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".view.fragments.DonorProfileSettingFragment">
+    tools:context=".view.fragments.auth.DonorProfileSettingFragment">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etFullName"

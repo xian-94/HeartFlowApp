@@ -1,4 +1,4 @@
-package com.example.heartflowapp.view.fragments;
+package com.example.heartflowapp.view.fragments.auth;
 
 import android.os.Bundle;
 
@@ -17,8 +17,6 @@ import com.example.heartflowapp.controller.DatabaseManager;
 import com.example.heartflowapp.model.BloodType;
 import com.example.heartflowapp.model.Donor;
 import com.example.heartflowapp.model.Gender;
-import com.example.heartflowapp.model.SiteManager;
-import com.example.heartflowapp.model.User;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.text.SimpleDateFormat;

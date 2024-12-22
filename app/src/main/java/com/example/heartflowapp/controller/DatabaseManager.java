@@ -2,6 +2,8 @@ package com.example.heartflowapp.controller;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Map;
+
 public class DatabaseManager {
 
     private final FirebaseFirestore db;
@@ -40,6 +42,18 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(e -> cb.onFailure(e.getMessage()));
 
+    }
+
+    public void getOneField(String collection, String id, FetchCallBack<Map<String, Object>> cb) {
+        db.collection(collection).document(id).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        cb.onSuccess(documentSnapshot.getData());
+                    } else {
+                        cb.onFailure("Document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> cb.onFailure(e.getMessage()));
     }
 
 
