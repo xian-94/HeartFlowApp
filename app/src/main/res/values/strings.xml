@@ -49,5 +49,7 @@
     <string name="label_user_position">My Position</string>
     <string name="no_site">No site information</string>
     <string name="to_create">+ Create site</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

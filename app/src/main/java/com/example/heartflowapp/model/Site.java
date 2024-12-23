@@ -1,6 +1,7 @@
 package com.example.heartflowapp.model;
 
 import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,5 +97,9 @@ public class Site {
 
     public void setTotalDonors(int totalDonors) {
         this.totalDonors = totalDonors;
+    }
+
+    public void add(String managerId) {
+        this.managerIds.add(managerId);
     }
 }

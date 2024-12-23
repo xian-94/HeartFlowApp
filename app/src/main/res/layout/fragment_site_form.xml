@@ -54,18 +54,6 @@
                 android:padding="5dp"
                 android:background="@drawable/input_selector"
                 />
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:id="@+id/show_map"
-                android:textSize="18sp"
-                android:padding="12dp"
-                android:focusable="true"
-                android:text="@string/address_choose"
-                android:clickable="true"
-                />
             <androidx.fragment.app.FragmentContainerView
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
