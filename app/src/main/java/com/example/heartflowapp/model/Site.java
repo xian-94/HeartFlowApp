@@ -2,29 +2,60 @@ package com.example.heartflowapp.model;
 
 import com.google.firebase.Timestamp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Site {
+public class Site implements Serializable {
     private String siteId;
     private String name;
     private String address;
     private double latitude;
     private double longitude;
     private String createdBy;
-    private List<String> managerIds;
-    private int totalDonors;
+    private String date;
+    private List<String> donors;
+    private List<String> volunteers;
+    private Map<String, Double> requiredBloodTypes;
     private Timestamp createdAt;
+    private String status;
 
-    public Site(String name, String address, double latitude, double longitude, String createdBy) {
+    public Site(String name, String address, double latitude, double longitude, String date, List<String> requiredBloodTypes) {
         this.name = name;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.createdBy = createdBy;
         this.createdAt = Timestamp.now();
-        this.managerIds = new ArrayList<>();
-        this.totalDonors = 0;
+        this.donors = new ArrayList<>();
+        this.volunteers = new ArrayList<>();
+        this.status = "ACTIVE";
+        this.date = date;
+        this.requiredBloodTypes = new HashMap<>();
+        for (String type : requiredBloodTypes) {
+            this.requiredBloodTypes.put(type, 0.0);
+        }
+    }
+
+    public Site() {
+
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public double getLatitude() {
@@ -35,13 +66,6 @@ public class Site {
         return longitude;
     }
 
-    public int getTotalDonors() {
-        return totalDonors;
-    }
-
-    public List<String> getManagerIds() {
-        return managerIds;
-    }
 
     public String getAddress() {
         return address;
@@ -83,9 +107,6 @@ public class Site {
         this.longitude = longitude;
     }
 
-    public void setManagerIds(List<String> managerIds) {
-        this.managerIds = managerIds;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -95,11 +116,41 @@ public class Site {
         this.siteId = siteId;
     }
 
-    public void setTotalDonors(int totalDonors) {
-        this.totalDonors = totalDonors;
+    public List<String> getDonors() {
+        return this.donors;
     }
 
-    public void add(String managerId) {
-        this.managerIds.add(managerId);
+    public List<String> getVolunteers() {
+        return volunteers;
     }
+
+    public void setDonors(List<String> donors) {
+        this.donors = donors;
+    }
+
+    public void setVolunteers(List<String> volunteers) {
+        this.volunteers = volunteers;
+    }
+
+    public void addDonor(String donor) {
+        this.donors.add(donor);
+    }
+
+    public void addVolunteer(String volunteer) {
+        this.donors.add(volunteer);
+    }
+
+    public Map<String, Double> getRequiredBloodTypes() {
+        return requiredBloodTypes;
+    }
+
+    public void setRequiredBloodTypes(Map<String, Double> requiredBloodTypes) {
+        this.requiredBloodTypes = requiredBloodTypes;
+    }
+
+    public void setBloodAmount(String type, double amount) {
+        this.requiredBloodTypes.put(type, amount);
+    }
+
+
 }

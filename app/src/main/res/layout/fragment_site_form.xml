@@ -5,69 +5,231 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragments.manager.SiteFormFragment">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/details_section"
+    <LinearLayout
+        android:id="@+id/details_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true"
-            android:padding="20dp">
+            android:text="@string/site_info"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/label_site_name"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/site_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/input_selector"
+            android:textColor="@color/black"
+            android:hint="@string/prompt_site_name" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_site_address"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/site_address"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/input_selector"
+            android:enabled="false"
+            android:padding="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_event_date"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/donation_date"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/input_selector"
+            android:padding="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/label_blood_type"
+            android:textStyle="bold" />
+
+        <GridLayout
+            android:id="@+id/blood_type_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:rowCount="2">
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/a_plus"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/site_info"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
+                android:layout_columnWeight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/box_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@drawable/text_selector"
+                android:text="@string/a_plus" />
+
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/a_minus"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="@string/label_site_name"
-                android:textStyle="bold" />
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/eSiteName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/input_selector"
-                android:layout_marginTop="10dp"
-                android:hint="@string/prompt_site_name" />
+                android:layout_columnWeight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/box_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:textColor="@drawable/text_selector"
+                android:padding="15dp"
+                android:text="@string/a_minus" />
+
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/b_plus"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/label_site_address"
-                android:textStyle="bold" />
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:id="@+id/address_display"
-                android:padding="5dp"
-                android:background="@drawable/input_selector"
-                />
-            <androidx.fragment.app.FragmentContainerView
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:id="@+id/map_container"
-                android:layout_height="400dp"/>
+                android:layout_columnWeight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/box_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@drawable/text_selector"
+                android:text="@string/b_plus" />
+
+            <TextView
+                android:id="@+id/b_minus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/box_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@drawable/text_selector"
+                android:text="@string/b_minus" />
+
+            <TextView
+                android:id="@+id/o_plus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/box_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@drawable/text_selector"
+                android:text="@string/o_plus" />
+
+            <TextView
+                android:id="@+id/o_minus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/box_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@drawable/text_selector"
+                android:text="@string/o_minus" />
+
+            <TextView
+                android:id="@+id/ab_plus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/box_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@drawable/text_selector"
+                android:text="@string/ab_plus" />
+
+            <TextView
+                android:id="@+id/ab_minus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/box_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@drawable/text_selector"
+                android:text="@string/ab_minus" />
+        </GridLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+         android:gravity="center"
+            android:layout_height="wrap_content">
             <com.google.android.material.button.MaterialButton
-                android:layout_width="300dp"
                 android:id="@+id/create_site"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_gravity="center"
-                android:text="@string/action_create"/>
+                android:paddingHorizontal="50dp"
+                android:backgroundTint="@color/primary_red"
+                android:text="@string/action_create" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingHorizontal="50dp"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="@color/purple"
+                android:text="@string/action_cancel" />
         </LinearLayout>
-    </RelativeLayout>
 
 
+    </LinearLayout>
 </ScrollView>

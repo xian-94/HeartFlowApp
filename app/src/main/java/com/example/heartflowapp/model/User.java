@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private String userId;
-private String fullName;
+    private String fullName;
     private String password;
-    private String email; // Need validation
-    private String phone; // Need validation
+    private String email;
     private UserRole role;
 
     public User() {
@@ -38,9 +37,6 @@ private String fullName;
         return password;
     }
 
-    public String getPhone() {
-        return phone;
-    }
 
     public String getUserId() {
         return userId;
@@ -63,9 +59,6 @@ private String fullName;
         this.email = email;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public void setRole(UserRole role) {
         this.role = role;

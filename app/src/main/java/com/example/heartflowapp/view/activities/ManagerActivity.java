@@ -2,9 +2,6 @@ package com.example.heartflowapp.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -12,9 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.heartflowapp.R;
 import com.example.heartflowapp.controller.DatabaseManager;
@@ -22,17 +16,17 @@ import com.example.heartflowapp.controller.ProgressManager;
 import com.example.heartflowapp.databinding.ActivityManagerBinding;
 import com.example.heartflowapp.model.Site;
 import com.example.heartflowapp.model.SiteManager;
-import com.example.heartflowapp.view.fragments.manager.EventFragment;
 import com.example.heartflowapp.view.fragments.manager.SiteFormFragment;
 import com.example.heartflowapp.view.fragments.manager.SiteFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.heartflowapp.view.ui.MapsFragment;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.List;
 
 public class ManagerActivity extends AppCompatActivity implements SiteFormFragment.SiteListener {
     ActivityManagerBinding binding;
     private String currentUserId;
     private String siteId;
-    private DatabaseManager db;
 
 
     @Override
@@ -41,7 +35,7 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
         EdgeToEdge.enable(this);
         binding = ActivityManagerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.manager_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -53,18 +47,23 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
             currentUserId = currentUser.getUserId();
         }
 
-        db = new DatabaseManager();
-        checkManagerSite(db);
+        DatabaseManager db = new DatabaseManager();
 
 
         binding.managerBottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.site) {
                 updateSiteFragment();
                 return true;
-            } else if (item.getItemId() == R.id.events) {
-                EventFragment eventFragment = new EventFragment();
+            } else if (item.getItemId() == R.id.manager_map) {
                 Bundle bundle = new Bundle();
-
+                bundle.putString("USER", currentUserId);
+                MapsFragment map = new MapsFragment();
+                map.setArguments(bundle);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.manager_container, map)
+                        .commit();
+                return true;
 
             }
             return false;
@@ -77,30 +76,30 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
 
     // Site management logic
     @Override
-    public void onSaveSite(String name, String address, double lat, double lng, String userId) {
-        Log.d("data", name + address + lat + lng + userId);
+    public void onSaveSite(String name, String address, double lat, double lng, String date, List<String> selectedBloodTypes) {
         DatabaseManager db = new DatabaseManager();
-        Site site = new Site(name, address, lat, lng, userId);
-        site.add(userId);
+        Site site = new Site(name, address, lat, lng, date, selectedBloodTypes);
+        site.setCreatedBy(currentUserId);
         ProgressManager.showProgress(this.getSupportFragmentManager());
-        db.add("site", site, new DatabaseManager.NormalCallBack() {
-            @Override
-            public void onSuccess() {
-                ProgressManager.dismissProgress();
-                Toast.makeText(ManagerActivity.this, "Save site successfully", Toast.LENGTH_SHORT).show();
-                SiteFragment siteFragment = new SiteFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("USER", currentUserId);
-                siteFragment.setArguments(bundle);
-                updateSiteFragment();
-            }
-
-            @Override
-            public void onFailure(String message) {
-                ProgressManager.dismissProgress();
-                Toast.makeText(ManagerActivity.this, "Failed to save site", Toast.LENGTH_SHORT).show();
-            }
-        });
+        db.getRef("site")
+                .add(site)
+                .addOnSuccessListener(documentReference -> {
+                    String documentId = documentReference.getId();
+                    documentReference.update("siteId", documentId)
+                            .addOnSuccessListener(aVoid -> {
+                                ProgressManager.dismissProgress();
+                                Toast.makeText(ManagerActivity.this, "Save site successfully", Toast.LENGTH_SHORT).show();
+                                updateSiteFragment();
+                            })
+                            .addOnFailureListener(e -> {
+                                ProgressManager.dismissProgress();
+                                Toast.makeText(ManagerActivity.this, "Failed to update site with ID", Toast.LENGTH_SHORT).show();
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    ProgressManager.dismissProgress();
+                    Toast.makeText(ManagerActivity.this, "Failed to save site", Toast.LENGTH_SHORT).show();
+                });
     }
 
     public void checkManagerSite(DatabaseManager db) {
@@ -122,8 +121,6 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
                 });
     }
 
-
-
     private void updateSiteFragment() {
         SiteFragment siteFragment = new SiteFragment();
         Bundle args = new Bundle();
@@ -136,4 +133,6 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
                 .replace(R.id.manager_container, siteFragment)
                 .commit();
     }
+
+
 }

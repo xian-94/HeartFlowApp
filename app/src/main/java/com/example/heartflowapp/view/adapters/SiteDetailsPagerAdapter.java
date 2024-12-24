@@ -4,31 +4,30 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.heartflowapp.model.Site;
 import com.example.heartflowapp.view.fragments.manager.DonorListFragment;
+import com.example.heartflowapp.view.fragments.manager.VolunteerListFragment;
 
-public class EventDetailsPagerAdapter extends FragmentStateAdapter {
+public class SiteDetailsPagerAdapter extends FragmentStateAdapter {
+    private final Site site;
 
-    private final String eventId;
-
-    public EventDetailsPagerAdapter(@NonNull Fragment fragment, String eventId) {
+    public SiteDetailsPagerAdapter(@NonNull Fragment fragment, Site site) {
         super(fragment);
-        this.eventId = eventId;
+        this.site = site;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         if (position == 0) {
-            return DonorListFragment.newInstance(eventId);
+            return DonorListFragment.newInstance(site.getSiteId());
         } else {
-//            return VolunteerListFragment.newInstance(eventId);
-            return DonorListFragment.newInstance(eventId);
+            return VolunteerListFragment.newInstance(site.getSiteId());
         }
     }
 
     @Override
     public int getItemCount() {
-        return 2; // Donors and Volunteers
+        return 2;
     }
 }
-

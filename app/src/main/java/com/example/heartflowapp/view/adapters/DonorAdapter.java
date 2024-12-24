@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,13 +32,7 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.DonorViewHol
     @Override
     public void onBindViewHolder(@NonNull DonorViewHolder holder, int position) {
         Donor donor = donorList.get(position);
-        holder.donorName.setText(donor.getFullName());
-        holder.donorPhone.setText(donor.getPhone());
-
-        // Optional: Add click listener for more actions
-        holder.itemView.setOnClickListener(v -> {
-            Toast.makeText(holder.itemView.getContext(), "Donor: " + donor.getFullName(), Toast.LENGTH_SHORT).show();
-        });
+        holder.name.setText(donor.getFullName());
     }
 
     @Override
@@ -48,13 +41,11 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.DonorViewHol
     }
 
     public static class DonorViewHolder extends RecyclerView.ViewHolder {
-        TextView donorName, donorPhone;
+        TextView name, phone;
 
         public DonorViewHolder(@NonNull View itemView) {
             super(itemView);
-            donorName = itemView.findViewById(R.id.name);
-            donorPhone = itemView.findViewById(R.id.phone);
+            name = itemView.findViewById(R.id.name);
         }
     }
 }
-

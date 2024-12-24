@@ -36,7 +36,8 @@ public class DonorProfileSettingFragment extends Fragment {
     private static final String USER_ID = "USER_ID";
     private static final String ROLE = "ROLE";
 
-    private EditText eFullName, eDOB;
+    private EditText eFullName;
+    private TextView eDOB;
     private TextView selectedBloodType;
     private TextView selectedGender;
     private String userId;
@@ -46,15 +47,6 @@ public class DonorProfileSettingFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileSettingFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DonorProfileSettingFragment newInstance(String param1, String param2) {
         DonorProfileSettingFragment fragment = new DonorProfileSettingFragment();
         Bundle args = new Bundle();
@@ -180,7 +172,6 @@ public class DonorProfileSettingFragment extends Fragment {
                 }
             });
         }
-        // TODO: Add else for SiteManager
 
 
     }

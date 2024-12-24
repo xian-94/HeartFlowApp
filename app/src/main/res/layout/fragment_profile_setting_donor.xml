@@ -41,6 +41,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
+            android:textColor="@color/light_red"
             android:padding="15dp"
             android:text="@string/male" />
 
@@ -54,6 +55,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
+            android:textColor="@color/light_red"
             android:padding="15dp"
             android:text="@string/female" />
     </GridLayout>
@@ -85,6 +87,7 @@
             android:focusable="true"
             android:gravity="center"
             android:padding="15dp"
+            android:textColor="@color/light_red"
             android:text="@string/a_plus" />
 
         <TextView
@@ -96,6 +99,7 @@
             android:background="@drawable/box_selector"
             android:clickable="true"
             android:focusable="true"
+            android:textColor="@color/light_red"
             android:gravity="center"
             android:padding="15dp"
             android:text="@string/a_minus" />
@@ -109,6 +113,7 @@
             android:background="@drawable/box_selector"
             android:clickable="true"
             android:focusable="true"
+            android:textColor="@color/light_red"
             android:gravity="center"
             android:padding="15dp"
             android:text="@string/b_plus" />
@@ -122,6 +127,7 @@
             android:background="@drawable/box_selector"
             android:clickable="true"
             android:focusable="true"
+            android:textColor="@color/light_red"
             android:gravity="center"
             android:padding="15dp"
             android:text="@string/b_minus" />
@@ -136,6 +142,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
+            android:textColor="@color/light_red"
             android:padding="15dp"
             android:text="@string/o_plus" />
 
@@ -149,6 +156,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
+            android:textColor="@color/light_red"
             android:padding="15dp"
             android:text="@string/o_minus" />
 
@@ -162,6 +170,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
+            android:textColor="@color/light_red"
             android:padding="15dp"
             android:text="@string/ab_plus" />
 
@@ -175,6 +184,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
+            android:textColor="@color/light_red"
             android:padding="15dp"
             android:text="@string/ab_minus" />
     </GridLayout>
@@ -191,10 +201,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <TextView
             android:id="@+id/eDOB"
             android:layout_width="200dp"
             android:layout_marginTop="10dp"
+            android:padding="10dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:background="@drawable/input_selector"
             android:hint="@string/prompt_dob"
@@ -205,14 +216,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:text="@string/label_datepicker" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/save_profile_btn"
+    <RelativeLayout
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/action_save" />
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/save_profile_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="50dp"
+            android:backgroundTint="@color/primary_red"
+            android:layout_centerInParent="true"
+            android:text="@string/action_save" />
+    </RelativeLayout>
+
+
 
 </LinearLayout>
