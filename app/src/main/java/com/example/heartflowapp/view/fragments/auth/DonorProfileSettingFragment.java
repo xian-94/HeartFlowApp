@@ -1,5 +1,6 @@
 package com.example.heartflowapp.view.fragments.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,9 +15,10 @@ import android.widget.Toast;
 
 import com.example.heartflowapp.R;
 import com.example.heartflowapp.controller.DatabaseManager;
+import com.example.heartflowapp.controller.ProgressManager;
 import com.example.heartflowapp.model.BloodType;
 import com.example.heartflowapp.model.Donor;
-import com.example.heartflowapp.model.Gender;
+import com.example.heartflowapp.view.activities.DonorActivity;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.text.SimpleDateFormat;
@@ -26,11 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DonorProfileSettingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DonorProfileSettingFragment extends Fragment {
 
     private static final String USER_ID = "USER_ID";
@@ -42,6 +39,7 @@ public class DonorProfileSettingFragment extends Fragment {
     private TextView selectedGender;
     private String userId;
     private String role;
+    private EditText ePhone;
 
     public DonorProfileSettingFragment() {
         // Required empty public constructor
@@ -72,6 +70,7 @@ public class DonorProfileSettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile_setting_donor, container, false);
         eFullName = view.findViewById(R.id.etFullName);
         eDOB = view.findViewById(R.id.eDOB);
+        ePhone = view.findViewById(R.id.ePhone);
         // Blood types button
         List<TextView> bloodTypeBtns = new ArrayList<>();
         TextView aPlus = view.findViewById(R.id.a_plus);
@@ -140,12 +139,14 @@ public class DonorProfileSettingFragment extends Fragment {
     }
 
     private void save() {
+        Toast.makeText(getContext(), "Call save", Toast.LENGTH_SHORT).show();
         String fullName = eFullName.getText().toString().trim();
         String dob = eDOB.getText().toString().trim();
         String gender = selectedGender != null ? selectedGender.getText().toString() : "";
         String bloodType = selectedBloodType != null ? selectedBloodType.getText().toString() : "";
+        String phone = ePhone.getText().toString().trim();
 
-        if (fullName.isEmpty() || dob.isEmpty() || gender.isEmpty() || bloodType.isEmpty()) {
+        if (fullName.isEmpty() || dob.isEmpty() || gender.isEmpty() || bloodType.isEmpty() || phone.isEmpty()) {
             Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -156,14 +157,23 @@ public class DonorProfileSettingFragment extends Fragment {
 
         DatabaseManager db = new DatabaseManager();
         if (role.equalsIgnoreCase("donor")) {
+            Toast.makeText(getContext(), "get role", Toast.LENGTH_SHORT).show();
             db.get("donor", userId, Donor.class, new DatabaseManager.FetchCallBack<>() {
                 @Override
                 public void onSuccess(Donor donor) {
                     donor.setFullName(fullName);
-                    donor.setGender(Gender.getGender(gender));
+                    Toast.makeText(requireContext(), fullName, Toast.LENGTH_SHORT).show();
+                    donor.setGender(gender);
+                    Toast.makeText(requireContext(), gender, Toast.LENGTH_SHORT).show();
                     donor.setDob(dob);
+                    Toast.makeText(requireContext(), dob, Toast.LENGTH_SHORT).show();
                     donor.setType(BloodType.getType(bloodType));
-                    saveUser(donor, "donor", userId);
+                    Toast.makeText(requireContext(), bloodType, Toast.LENGTH_SHORT).show();
+                    donor.setPhone(phone);
+                    Toast.makeText(requireContext(), phone, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Saving...", Toast.LENGTH_SHORT).show();
+                    saveUser(donor, userId);
+
                 }
 
                 @Override
@@ -176,13 +186,18 @@ public class DonorProfileSettingFragment extends Fragment {
 
     }
 
-    private <T> void saveUser(T user, String collection, String userId) {
+    private <T> void saveUser(T user, String userId) {
+        ProgressManager.showProgress(getChildFragmentManager());
         DatabaseManager db = new DatabaseManager();
-        db.update(collection, userId, user, new DatabaseManager.NormalCallBack() {
+        db.update("donor", userId, user, new DatabaseManager.NormalCallBack() {
             @Override
             public void onSuccess() {
                 Toast.makeText(getContext(), "Profile updated successfully!", Toast.LENGTH_SHORT).show();
-//                navigateToMainActivity(); // Redirect to main activity or next screen
+                // Navigate to Donor screen
+                Intent intent = new Intent(getActivity(), DonorActivity.class);
+                intent.putExtra("USER", userId);
+                startActivity(intent);
+                requireActivity().finish();
             }
 
             @Override

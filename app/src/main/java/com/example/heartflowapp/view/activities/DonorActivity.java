@@ -26,17 +26,13 @@ public class DonorActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivityManagerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.donor_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
         Intent intent = getIntent();
-        Donor currentUser = (Donor) intent.getSerializableExtra("USER");
-        if (currentUser != null) {
-            currentUserId = currentUser.getUserId();
-        }
-
+        currentUserId =   intent.getStringExtra("USER");
         binding.managerBottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.home) {
 //                updateSiteFragment();

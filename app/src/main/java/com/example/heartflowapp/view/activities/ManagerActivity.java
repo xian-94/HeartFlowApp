@@ -10,23 +10,23 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.heartflowapp.MainActivity;
 import com.example.heartflowapp.R;
 import com.example.heartflowapp.controller.DatabaseManager;
 import com.example.heartflowapp.controller.ProgressManager;
 import com.example.heartflowapp.databinding.ActivityManagerBinding;
 import com.example.heartflowapp.model.Site;
 import com.example.heartflowapp.model.SiteManager;
+import com.example.heartflowapp.view.fragments.manager.ManagerProfileFragment;
 import com.example.heartflowapp.view.fragments.manager.SiteFormFragment;
 import com.example.heartflowapp.view.fragments.manager.ManagerDashboardFragment;
 import com.example.heartflowapp.view.ui.MapsFragment;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
 public class ManagerActivity extends AppCompatActivity implements SiteFormFragment.SiteListener {
     ActivityManagerBinding binding;
     private String currentUserId;
-    private String siteId;
 
 
     @Override
@@ -47,9 +47,6 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
             currentUserId = currentUser.getUserId();
         }
 
-        DatabaseManager db = new DatabaseManager();
-
-
         binding.managerBottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.site) {
                 updateSiteFragment();
@@ -64,9 +61,18 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
                         .replace(R.id.manager_container, map)
                         .commit();
                 return true;
-
             }
-            return false;
+            else {
+                Bundle bundle = new Bundle();
+                bundle.putString("USER", currentUserId);
+                ManagerProfileFragment map = new ManagerProfileFragment();
+                map.setArguments(bundle);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.manager_container, map)
+                        .commit();
+                return true;
+            }
         });
 
         binding.managerBottomNavigation.setSelectedItemId(R.id.site);
@@ -113,6 +119,15 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
                 .beginTransaction()
                 .replace(R.id.manager_container, siteFragment)
                 .commit();
+    }
+
+    public void logout() {
+        // Navigate back to main
+        Intent intent = new Intent(ManagerActivity.this, MainActivity.class);
+        // Clear back stack
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
 

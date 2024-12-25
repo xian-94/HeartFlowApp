@@ -1,5 +1,9 @@
 package com.example.heartflowapp.controller;
 
+import android.widget.Toast;
+
+import com.example.heartflowapp.model.BloodType;
+import com.example.heartflowapp.model.Donor;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,9 +47,17 @@ public class DatabaseManager {
         db.collection(collection).document(id).get()
                 .addOnSuccessListener(d -> {
                     if (d.exists()) {
-                        cb.onSuccess(d.toObject(obj));
-                    } else {
-                        cb.onFailure("Document does not exist");
+                        T retrievedObject = d.toObject(obj);
+//                        // Handle convert blood type
+                        if (retrievedObject instanceof Donor) {
+                            Donor donor = (Donor) retrievedObject;
+                            String bloodTypeText = d.getString("type");
+                            if (bloodTypeText != null) {
+                                donor.setType(BloodType.getType(bloodTypeText));
+
+                            }
+                        }
+                        cb.onSuccess(retrievedObject);
                     }
                 })
                 .addOnFailureListener(e -> cb.onFailure(e.getMessage()));

@@ -1,18 +1,16 @@
 package com.example.heartflowapp.model;
 
-import java.util.Date;
 
-public class Donor extends User {
+import java.io.Serializable;
 
-    private Gender gender;
+public class Donor extends User implements Serializable {
+
+    private String gender;
     private String dob;
     private BloodType type;
 
-    // Use to retrieve nearby sites
-    private String address;
-    private String city;
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -34,17 +32,10 @@ public class Donor extends User {
         return dob;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public String getCity() {
-        return city;
-    }
 
     public void setDob(String dob) {
         this.dob = dob;

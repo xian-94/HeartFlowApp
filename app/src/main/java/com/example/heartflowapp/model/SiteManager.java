@@ -1,29 +1,21 @@
 package com.example.heartflowapp.model;
 
 public class SiteManager extends User {
-    private String siteId;
-    private String position;
+    private String gender;
 
     public SiteManager() {
         super();
     }
+
     public SiteManager(String userId, String email, String password) {
         super(userId, email, password, UserRole.MANAGER);
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public String getGender() {
+        return gender;
     }
 
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
-    }
-
-    public String getSiteId() {
-        return siteId;
-    }
-
-    public String getPosition() {
-        return position;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
