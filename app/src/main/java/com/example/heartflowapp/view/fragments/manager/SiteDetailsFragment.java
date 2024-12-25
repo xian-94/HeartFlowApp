@@ -236,14 +236,14 @@ public class SiteDetailsFragment extends Fragment {
     private void updateSiteStatusAndData(Map<String, Double> collectedData, Button saveBtn) {
         DatabaseManager db = new DatabaseManager();
         Map<String, Object> updates = new HashMap<>();
-        updates.put("status", "complete");
+        updates.put("status", "COMPLETE");
         updates.put("requiredBloodTypes", collectedData);
 
         db.getRef("site").document(site.getSiteId())
                 .update(updates)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Drive ended and data saved successfully!", Toast.LENGTH_SHORT).show();
-                    site.setStatus("complete");
+                    site.setStatus("COMPLETE");
                     site.setRequiredBloodTypes(collectedData);
                     // Disable button
                     saveBtn.setClickable(false);

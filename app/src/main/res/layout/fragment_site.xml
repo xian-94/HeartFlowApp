@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.fragments.manager.SiteFragment">
+    tools:context=".view.fragments.manager.ManagerDashboardFragment">
 
     <LinearLayout
         android:id="@+id/site_dashboard"
@@ -18,16 +18,9 @@
             style="@style/MaterialAlertDialog.Material3.Title.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="115 People Hospital"
+            android:text="@string/label_dashboard"
             android:textAlignment="center"
             android:textStyle="bold" />
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="572 Su Van hanh....."
-            android:textAlignment="center"
-            />
 
 
         <GridLayout
@@ -62,7 +55,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Total donors"
+                            android:text="@string/label_total_donors"
                             android:textAlignment="center"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -74,6 +67,7 @@
                             android:layout_marginTop="10dp"
                             android:text="3"
                             android:textAlignment="center"
+                            android:textColor="@color/primary_red"
                             android:textSize="28sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -103,7 +97,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Total events"
+                            android:text="@string/label_total_drives"
                             android:textAlignment="center"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -115,57 +109,30 @@
                             android:layout_marginTop="10dp"
                             android:text="3"
                             android:textAlignment="center"
-                            android:textColor="@color/black"
+                            android:textColor="@color/primary_red"
                             android:textSize="28sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </GridLayout>
+
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Managers"
-            android:textSize="18sp"
             style="@style/MaterialAlertDialog.Material3.Title.Text"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/manger_list_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_charts"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/blood_trend_chart"
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content"/>
+            android:padding="10dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp" />
 
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/no_site"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="invisible">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_site" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/to_site_form"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/to_create" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
 
 
 </LinearLayout>

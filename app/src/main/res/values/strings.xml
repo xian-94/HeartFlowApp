@@ -64,7 +64,9 @@
     <string name="action_end_drive">End drive</string>
     <string name="label_required_types">Required blood types</string>
     <string name="blood_collection">Blood type collection</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_charts">Total Blood Collected By Drive</string>
+    <string name="label_total_drives">Total Drives</string>
+    <string name="label_total_donors">Total Donors</string>
+    <string name="label_dashboard">My Dashboard</string>
 
 </resources>

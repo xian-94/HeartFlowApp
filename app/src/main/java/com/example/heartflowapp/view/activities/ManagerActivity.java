@@ -17,7 +17,7 @@ import com.example.heartflowapp.databinding.ActivityManagerBinding;
 import com.example.heartflowapp.model.Site;
 import com.example.heartflowapp.model.SiteManager;
 import com.example.heartflowapp.view.fragments.manager.SiteFormFragment;
-import com.example.heartflowapp.view.fragments.manager.SiteFragment;
+import com.example.heartflowapp.view.fragments.manager.ManagerDashboardFragment;
 import com.example.heartflowapp.view.ui.MapsFragment;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -102,30 +102,11 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
                 });
     }
 
-    public void checkManagerSite(DatabaseManager db) {
-        db.getRef("site")
-                .whereArrayContains("managerIds", currentUserId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().getDocuments().isEmpty()) {
-                        DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                        siteId = document.getId();
-                    } else {
-                        siteId = null;
-                    }
-                    updateSiteFragment();
-                })
-                .addOnFailureListener(e -> {
-                    siteId = null;
-                    updateSiteFragment();
-                });
-    }
 
     private void updateSiteFragment() {
-        SiteFragment siteFragment = new SiteFragment();
+        ManagerDashboardFragment siteFragment = new ManagerDashboardFragment();
         Bundle args = new Bundle();
         args.putString("USER", currentUserId);
-        args.putString("SITE", siteId);
         siteFragment.setArguments(args);
 
         getSupportFragmentManager()

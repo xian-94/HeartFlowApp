@@ -47,7 +47,7 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
         public VolunteerViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
-            phone = itemView.findViewById(R.id.phone);
+//            phone = itemView.findViewById(R.id.phone);
         }
     }
 }
