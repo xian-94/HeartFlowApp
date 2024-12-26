@@ -52,7 +52,7 @@
             android:gravity="center"
             android:padding="15dp"
             android:text="@string/male"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
 
         <TextView
             android:id="@+id/female"
@@ -66,7 +66,7 @@
             android:gravity="center"
             android:padding="15dp"
             android:text="@string/female"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
     </GridLayout>
 
     <TextView

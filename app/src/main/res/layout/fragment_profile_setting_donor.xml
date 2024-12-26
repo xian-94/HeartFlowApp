@@ -43,7 +43,7 @@
             android:gravity="center"
             android:padding="15dp"
             android:text="@string/male"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
 
         <TextView
             android:id="@+id/female"
@@ -57,7 +57,7 @@
             android:gravity="center"
             android:padding="15dp"
             android:text="@string/female"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
     </GridLayout>
 
     <TextView
@@ -85,9 +85,9 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:padding="15dp"
+            android:paddingVertical="15dp"
             android:text="@string/a_plus"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
 
         <TextView
             android:id="@+id/a_minus"
@@ -99,9 +99,9 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:padding="15dp"
+            android:paddingVertical="15dp"
             android:text="@string/a_minus"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
 
         <TextView
             android:id="@+id/b_plus"
@@ -113,9 +113,9 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:padding="15dp"
+            android:paddingVertical="15dp"
             android:text="@string/b_plus"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
 
         <TextView
             android:id="@+id/b_minus"
@@ -127,9 +127,9 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:padding="15dp"
+            android:paddingVertical="15dp"
             android:text="@string/b_minus"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
 
         <TextView
             android:id="@+id/o_plus"
@@ -141,9 +141,9 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:padding="15dp"
+            android:paddingVertical="15dp"
             android:text="@string/o_plus"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
 
         <TextView
             android:id="@+id/o_minus"
@@ -155,9 +155,9 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:padding="15dp"
+            android:paddingVertical="15dp"
             android:text="@string/o_minus"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
 
         <TextView
             android:id="@+id/ab_plus"
@@ -169,9 +169,9 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:padding="15dp"
+            android:paddingVertical="15dp"
             android:text="@string/ab_plus"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
 
         <TextView
             android:id="@+id/ab_minus"
@@ -183,9 +183,9 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:padding="15dp"
+            android:paddingVertical="15dp"
             android:text="@string/ab_minus"
-            android:textColor="@color/light_red" />
+            android:textColor="@drawable/text_selector" />
     </GridLayout>
 
     <TextView
@@ -203,7 +203,7 @@
         <TextView
             android:id="@+id/eDOB"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/input_selector"

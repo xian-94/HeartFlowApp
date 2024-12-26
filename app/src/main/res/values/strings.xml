@@ -73,4 +73,9 @@
     <string name="label_total_donors">Total Donors</string>
     <string name="label_dashboard">My Dashboard</string>
 
+    <!-- Donor view label -->
+    <string name="label_donation_events">Donation Events</string>
+    <string name="label_volunteer_events">Volunteer Events</string>
+    <string name="label_past_events">My Past Events</string>
+
 </resources>

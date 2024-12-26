@@ -12,12 +12,10 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.heartflowapp.MainActivity;
 import com.example.heartflowapp.R;
 import com.example.heartflowapp.databinding.ActivityDonorBinding;
-import com.example.heartflowapp.databinding.ActivityManagerBinding;
 import com.example.heartflowapp.model.Donor;
-import com.example.heartflowapp.model.SiteManager;
+import com.example.heartflowapp.view.fragments.donor.DonorDashboardFragment;
 import com.example.heartflowapp.view.fragments.donor.DonorMapFragment;
 import com.example.heartflowapp.view.fragments.donor.DonorProfileFragment;
-import com.example.heartflowapp.view.ui.MapsFragment;
 
 public class DonorActivity extends AppCompatActivity {
     ActivityDonorBinding binding;
@@ -40,12 +38,17 @@ public class DonorActivity extends AppCompatActivity {
             currentUserId = currentUser.getUserId();
         }
         binding.donorBottomNavigation.setOnItemSelectedListener(item -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("USER", currentUserId);
             if (item.getItemId() == R.id.home) {
-//                updateSiteFragment();
+                DonorDashboardFragment dashboard = new DonorDashboardFragment();
+                dashboard.setArguments(bundle);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.donor_container, dashboard)
+                        .commit();
                 return true;
             } else if (item.getItemId() == R.id.donor_map) {
-                Bundle bundle = new Bundle();
-                bundle.putString("USER", currentUserId);
                 DonorMapFragment map = new DonorMapFragment();
                 map.setArguments(bundle);
                 getSupportFragmentManager()
@@ -54,8 +57,6 @@ public class DonorActivity extends AppCompatActivity {
                         .commit();
                 return true;
             } else {
-                Bundle bundle = new Bundle();
-                bundle.putString("USER", currentUserId);
                 DonorProfileFragment profile = new DonorProfileFragment();
                 profile.setArguments(bundle);
                 getSupportFragmentManager()
@@ -65,6 +66,7 @@ public class DonorActivity extends AppCompatActivity {
                 return true;
             }
         });
+        binding.donorBottomNavigation.setSelectedItemId(R.id.home);
 
     }
 
