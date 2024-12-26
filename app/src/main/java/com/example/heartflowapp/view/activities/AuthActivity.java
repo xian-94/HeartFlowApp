@@ -170,7 +170,6 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Sign in success
-                        Toast.makeText(AuthActivity.this, "Sign in successfully", Toast.LENGTH_SHORT).show();
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
                             db = new DatabaseManager();
@@ -208,7 +207,7 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
         db.update(collection, uid, newUser, new DatabaseManager.NormalCallBack() {
             @Override
             public void onSuccess() {
-                Toast.makeText(AuthActivity.this, "User registered successfully!", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

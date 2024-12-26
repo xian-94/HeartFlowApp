@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heartflowapp.R;
 import com.example.heartflowapp.controller.DatabaseManager;
+import com.example.heartflowapp.model.Donor;
 import com.example.heartflowapp.model.SiteManager;
 import com.example.heartflowapp.model.User;
 import com.example.heartflowapp.view.adapters.VolunteerAdapter;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,70 +60,51 @@ public class VolunteerListFragment extends Fragment {
     private void fetchVolunteers() {
         DatabaseManager db = new DatabaseManager();
 
-        // Listen for changes in the volunteers subcollection
-        db.getRef("site").document(siteId).collection("volunteers")
-                .addSnapshotListener((querySnapshot, e) -> {
-                    if (e != null) {
-                        Toast.makeText(getContext(), "Failed to fetch volunteers: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (querySnapshot != null) {
-                        for (DocumentChange change : querySnapshot.getDocumentChanges()) {
-                            String userId = change.getDocument().getId(); // Get user ID
-
-                            switch (change.getType()) {
-                                case ADDED:
-                                    fetchVolunteerDetails(userId, "ADDED");
-                                    break;
-                                case MODIFIED:
-                                    fetchVolunteerDetails(userId, "MODIFIED");
-                                    break;
-                                case REMOVED:
-                                    int indexToRemove = findVolunteerIndex(userId);
-                                    if (indexToRemove != -1) {
-                                        volunteerList.remove(indexToRemove);
-                                        volunteerAdapter.notifyItemRemoved(indexToRemove);
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void fetchVolunteerDetails(String userId, String changeType) {
-        DatabaseManager db = new DatabaseManager();
-        // Fetch the full volunteer details from the users collection
-        db.getRef("user").document(userId).get()
+        // Fetch donor IDs from the site document
+        db.getRef("site").document(siteId)
+                .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        User volunteer = documentSnapshot.toObject(User.class);
-                        if ("ADDED".equals(changeType)) {
-                            volunteerList.add(volunteer);
-                            volunteerAdapter.notifyItemInserted(volunteerList.size() - 1);
-                        } else if ("MODIFIED".equals(changeType)) {
-                            int indexToModify = findVolunteerIndex(userId);
-                            if (indexToModify != -1) {
-                                volunteerList.set(indexToModify, volunteer);
-                                volunteerAdapter.notifyItemChanged(indexToModify);
-                            }
+                        List<String> volunteerIds = (List<String>) documentSnapshot.get("volunteers");
+                        if (volunteerIds != null && !volunteerIds.isEmpty()) {
+                            fetchDonorObjs(volunteerIds);
+                        } else {
+                            Toast.makeText(getContext(), "No volunteers found for this site", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Failed to fetch volunteer details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to fetch site data", Toast.LENGTH_SHORT).show());
     }
 
-    private int findVolunteerIndex(String userId) {
-        for (int i = 0; i < volunteerList.size(); i++) {
-            if (volunteerList.get(i).getUserId().equals(userId)) {
-                return i;
-            }
+    private void fetchDonorObjs(List<String> volunteersIds) {
+        DatabaseManager db = new DatabaseManager();
+        volunteerList.clear();
+
+        for (String id : volunteersIds) {
+            db.getRef("user").document(id)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            if (documentSnapshot.get("role").toString().equalsIgnoreCase("donor")) {
+                                Donor donor = documentSnapshot.toObject(Donor.class);
+                                if (donor != null) {
+                                    volunteerList.add(donor);
+                                    volunteerAdapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                SiteManager manager = documentSnapshot.toObject(SiteManager.class);
+                                if (manager != null) {
+                                    volunteerList.add(manager);
+                                    volunteerAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(getContext(), "Failed to fetch donor: " + id, Toast.LENGTH_SHORT).show());
         }
-        return -1;
+
+
     }
-
-
 }

@@ -22,7 +22,6 @@ import com.example.heartflowapp.model.SiteManager;
 import com.example.heartflowapp.view.adapters.SiteDetailsPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
 import java.util.Map;
 
 public class AdminSiteDetailsFragment extends Fragment {
@@ -54,6 +53,7 @@ public class AdminSiteDetailsFragment extends Fragment {
         TextView siteManager = view.findViewById(R.id.site_manager);
         TabLayout tabLayout = view.findViewById(R.id.site_details_tab_layout);
         ViewPager2 viewPager = view.findViewById(R.id.site_details_view_pager);
+        TextView siteStatus = view.findViewById(R.id.site_status);
 
         if (getArguments() != null) {
             site = (Site) getArguments().getSerializable(ARG_SITE);
@@ -61,6 +61,7 @@ public class AdminSiteDetailsFragment extends Fragment {
             siteName.setText(site.getName());
             siteAddress.setText(site.getAddress());
             donationDate.setText(site.getDate());
+            siteStatus.setText(site.getStatus());
             getUser(siteManager);
             populateBloodTypes(bloodTypesContainer, site.getRequiredBloodTypes());
 
@@ -111,7 +112,7 @@ public class AdminSiteDetailsFragment extends Fragment {
 
     private void getUser(TextView siteManager) {
         DatabaseManager db = new DatabaseManager();
-        db.getRef("users").document(user).get()
+        db.getRef("user").document(user).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         SiteManager fetchedUser = task.getResult().toObject(SiteManager.class);

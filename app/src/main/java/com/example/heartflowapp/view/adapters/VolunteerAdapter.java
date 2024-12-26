@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heartflowapp.R;
+import com.example.heartflowapp.model.SiteManager;
 import com.example.heartflowapp.model.User;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
         public VolunteerViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
-//            phone = itemView.findViewById(R.id.phone);
+            phone = itemView.findViewById(R.id.phone);
         }
     }
 }
