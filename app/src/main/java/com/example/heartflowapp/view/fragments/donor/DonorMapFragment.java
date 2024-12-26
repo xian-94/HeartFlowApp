@@ -7,20 +7,27 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.example.heartflowapp.R;
 import com.example.heartflowapp.controller.DatabaseManager;
 import com.example.heartflowapp.model.Site;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,8 +38,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -43,19 +52,24 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private SearchView mapSearch;
     private String user;
+    private LatLng currentLocation;
     private final List<Site> siteList = new ArrayList<>();
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+        View view = inflater.inflate(R.layout.fragment_donor_map, container, false);
         mapSearch = view.findViewById(R.id.map_search_bar);
+        ImageButton filterBtn = view.findViewById(R.id.to_filter);
+        filterBtn.setOnClickListener(v -> openFilterDialog());
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
+
+
 
         // Handle search location query
         mapSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -86,6 +100,29 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
         }
         updateMarkers(filteredSites);
     }
+
+    // Get user's current location
+    private void getCurrentLocation() {
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+                        // Optionally add a marker for the user's location
+                        googleMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here")
+                                .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromDrawable(R.drawable.icon_user))));
+                    } else {
+                        Toast.makeText(requireContext(), "Unable to fetch location", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 
 
     private void addMarker(LatLng latLng, Site site) {
@@ -123,22 +160,12 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private Site findSiteByLatLng(LatLng latLng) {
-        for (Site site : siteList) {
-            if (site.getLatitude() == latLng.latitude && site.getLongitude() == latLng.longitude) {
-                return site;
-            }
-        }
-        return null;
-    }
-
     @Override
     public void onMapReady(@NonNull GoogleMap map) {
         this.googleMap = map;
-
+        getCurrentLocation();
         loadSites();
         googleMap.getUiSettings().setZoomControlsEnabled(true);
-        // Enable zoom control and get current location
         // Check location permissions
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -146,7 +173,6 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     LOCATION_REQUEST_CODE);
         } else {
-            // Enable current location button
             googleMap.setMyLocationEnabled(true);
         }
 
@@ -167,7 +193,7 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
         }
         DatabaseManager db = new DatabaseManager();
         db.getRef("site")
-                .whereEqualTo("status", "active")
+                .whereEqualTo("status", "ACTIVE")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     siteList.clear();
@@ -182,8 +208,13 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
                     if (!siteList.isEmpty()) {
                         initialLatLng = new LatLng(siteList.get(0).getLatitude(), siteList.get(0).getLongitude());
                     } else {
-                        // Default to RMIT location
-                        initialLatLng = new LatLng(10.7295137449591, 106.70918280905457);
+                        if (currentLocation != null) {
+                            initialLatLng = currentLocation;
+                        }
+                        else {
+                            // Default to RMIT location
+                            initialLatLng = new LatLng(10.7295137449591, 106.70918280905457);
+                        }
                     }
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(initialLatLng, 15);
                     googleMap.animateCamera(cameraUpdate);
@@ -195,7 +226,7 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
         DonorSiteDetailsFragment fragment = DonorSiteDetailsFragment.newInstance(site, user);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.manager_container, fragment)
+                .replace(R.id.donor_container, fragment)
                 .addToBackStack(null)
                 .commit();
     }
@@ -214,4 +245,76 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
     }
+
+    /**
+     * Apply filter sites based on blood types and date
+     */
+    private void openFilterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        View filterView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_filter, null);
+        builder.setView(filterView);
+
+        Spinner bloodTypeSpinner = filterView.findViewById(R.id.blood_type_spinner);
+        DatePicker datePicker = filterView.findViewById(R.id.event_date_picker);
+
+        // Populate blood type spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, getBloodTypes());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        bloodTypeSpinner.setAdapter(adapter);
+
+        builder.setPositiveButton("Apply", (dialog, which) -> {
+            String selectedBloodType = bloodTypeSpinner.getSelectedItem().toString();
+            int year = datePicker.getYear();
+            int month = datePicker.getMonth();
+            int day = datePicker.getDayOfMonth();
+            LocalDate selectedDate = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                selectedDate = LocalDate.of(year, month + 1, day);
+            }
+
+            applyFilters(selectedBloodType, selectedDate);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        builder.create().show();
+    }
+
+    private List<String> getBloodTypes() {
+        return Arrays.asList("A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-", "Any");
+    }
+
+    private void applyFilters(String bloodType, LocalDate eventDate) {
+        List<Site> filteredSites = new ArrayList<>();
+        DateTimeFormatter dateFormatter = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        }
+
+        for (Site site : siteList) {
+            boolean matchesBloodType = bloodType.equals("Any") || site.getRequiredBloodTypes().containsKey(bloodType);
+
+            boolean matchesDate = false;
+            try {
+                // Parse the site's date string into a LocalDate
+                String siteDateString = site.getDate();
+                LocalDate siteDate = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    siteDate = LocalDate.parse(siteDateString, dateFormatter);
+                }
+
+                matchesDate = (eventDate == null) || eventDate.equals(siteDate);
+            } catch (RuntimeException e) {
+                Toast.makeText(requireContext(), "Invalid date format", Toast.LENGTH_SHORT).show();
+            }
+
+            if (matchesBloodType && matchesDate) {
+                filteredSites.add(site);
+            }
+        }
+
+        updateMarkers(filteredSites);
+    }
+
+
 }

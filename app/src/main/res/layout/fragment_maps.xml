@@ -22,12 +22,6 @@
         android:layout_height="match_parent"
         tools:context=".view.ui.MapsFragment" />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/box_selector"
-        android:padding="5dp"
-        android:src="@drawable/icon_filter" />
 
 
 </RelativeLayout>

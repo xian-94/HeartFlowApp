@@ -58,6 +58,18 @@ public class DonorSiteDetailsFragment extends Fragment {
             siteName.setText(site.getName());
             siteAddress.setText(site.getAddress());
             donationDate.setText(site.getDate());
+            if (site.getDonors().contains(user)) {
+                registerButton.setBackgroundColor(Color.parseColor("#A1D6CB"));
+                registerButton.setTextColor(Color.parseColor("#507687"));
+                registerButton.setClickable(false);
+                registerButton.setEnabled(false);
+            }
+            if (site.getVolunteers().contains(user)) {
+                volunteerBtn.setBackgroundColor(Color.parseColor("#A1D6CB"));
+                volunteerBtn.setTextColor(Color.parseColor("#507687"));
+                volunteerBtn.setClickable(false);
+                volunteerBtn.setEnabled(false);
+            }
             populateBloodTypes(bloodTypesContainer, site.getRequiredBloodTypes());
 
         }
@@ -84,8 +96,9 @@ public class DonorSiteDetailsFragment extends Fragment {
                 Toast.makeText(requireActivity(), "User added to donors successfully", Toast.LENGTH_SHORT).show();
                 ProgressManager.dismissProgress();
                 registerBtn.setBackgroundColor(Color.parseColor("#A1D6CB"));
-                registerBtn.setTextColor(Color.parseColor("507687"));
+                registerBtn.setTextColor(Color.parseColor("#507687"));
                 registerBtn.setClickable(false);
+                registerBtn.setEnabled(false);
             }
 
             @Override
@@ -136,6 +149,7 @@ public class DonorSiteDetailsFragment extends Fragment {
                 volunteerBtn.setClickable(false);
                 volunteerBtn.setBackgroundColor(Color.parseColor("#A1D6CB"));
                 volunteerBtn.setTextColor(Color.parseColor("#507687"));
+                volunteerBtn.setEnabled(false);
             }
 
             @Override

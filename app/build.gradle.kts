@@ -56,6 +56,8 @@ dependencies {
     implementation (libs.material.v190)
     implementation(libs.places)
     implementation (libs.mpandroidchart)
+    implementation (libs.itext7.core)
+
 
 
 
