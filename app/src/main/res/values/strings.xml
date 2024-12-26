@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HeartFlowApp</string>
+    <string name="app_name">Heart Flow</string>
     <!-- General -->
     <string name="loading">Loading…</string>
     <string name="action_save">Save</string>

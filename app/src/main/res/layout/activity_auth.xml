@@ -38,8 +38,6 @@
                 android:orientation="vertical">
 
             </LinearLayout>
-
-
         </LinearLayout>
 
         <RelativeLayout

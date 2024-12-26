@@ -29,6 +29,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/input_selector"
         android:hint="@string/prompt_email" />
 
     <com.google.android.material.textfield.TextInputEditText
@@ -37,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/input_selector"
         android:hint="@string/prompt_password"
         android:inputType="textPassword" />
 
@@ -53,5 +55,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
+        android:backgroundTint="@color/primary_red"
         android:text="@string/action_sign_up" />
 </LinearLayout>
