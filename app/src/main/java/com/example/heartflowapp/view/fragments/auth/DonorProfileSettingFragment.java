@@ -162,16 +162,10 @@ public class DonorProfileSettingFragment extends Fragment {
                 @Override
                 public void onSuccess(Donor donor) {
                     donor.setFullName(fullName);
-                    Toast.makeText(requireContext(), fullName, Toast.LENGTH_SHORT).show();
                     donor.setGender(gender);
-                    Toast.makeText(requireContext(), gender, Toast.LENGTH_SHORT).show();
                     donor.setDob(dob);
-                    Toast.makeText(requireContext(), dob, Toast.LENGTH_SHORT).show();
                     donor.setType(BloodType.getType(bloodType));
-                    Toast.makeText(requireContext(), bloodType, Toast.LENGTH_SHORT).show();
                     donor.setPhone(phone);
-                    Toast.makeText(requireContext(), phone, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(requireContext(), "Saving...", Toast.LENGTH_SHORT).show();
                     saveUser(donor, userId);
 
                 }
@@ -195,7 +189,7 @@ public class DonorProfileSettingFragment extends Fragment {
                 Toast.makeText(getContext(), "Profile updated successfully!", Toast.LENGTH_SHORT).show();
                 // Navigate to Donor screen
                 Intent intent = new Intent(getActivity(), DonorActivity.class);
-                intent.putExtra("USER", userId);
+                intent.putExtra("USER", (Donor) user);
                 startActivity(intent);
                 requireActivity().finish();
             }

@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import com.example.heartflowapp.R;
 import com.example.heartflowapp.controller.DatabaseManager;
+import com.example.heartflowapp.model.BloodType;
 import com.example.heartflowapp.model.Donor;
+import com.example.heartflowapp.view.activities.DonorActivity;
 import com.example.heartflowapp.view.activities.ManagerActivity;
 
 public class DonorProfileFragment extends Fragment {
@@ -50,7 +52,7 @@ public class DonorProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_manager_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_donor_profile, container, false);
 
         // Bind views
         fullName = view.findViewById(R.id.full_name);
@@ -77,12 +79,11 @@ public class DonorProfileFragment extends Fragment {
             @Override
             public void onSuccess(Donor user) {
                 if (user != null) {
-                    // Populate UI with user details
                     fullName.setText(user.getFullName());
                     gender.setText(user.getGender());
                     phone.setText(user.getPhone());
                     dob.setText(user.getDob());
-                    type.setText(user.getType().toString());
+                    type.setText(BloodType.toString(user.getType()));
                 } else {
                     Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
                 }
@@ -96,8 +97,8 @@ public class DonorProfileFragment extends Fragment {
     }
 
     private void handleLogout() {
-        if (getActivity() instanceof ManagerActivity) {
-            ((ManagerActivity) getActivity()).logout();
+        if (getActivity() instanceof DonorActivity) {
+            ((DonorActivity) getActivity()).logout();
         } else {
             Toast.makeText(getContext(), "Unable to logout", Toast.LENGTH_SHORT).show();
         }

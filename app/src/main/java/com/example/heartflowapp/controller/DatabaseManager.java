@@ -53,7 +53,7 @@ public class DatabaseManager {
                             Donor donor = (Donor) retrievedObject;
                             String bloodTypeText = d.getString("type");
                             if (bloodTypeText != null) {
-                                donor.setType(BloodType.getType(bloodTypeText));
+                                donor.setType(BloodType.parseBloodTpe(bloodTypeText));
 
                             }
                         }

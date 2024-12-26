@@ -88,7 +88,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="110dp"
             android:text="@string/label_dob"
             android:textStyle="bold" />
 
@@ -109,7 +109,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="80dp"
             android:text="@string/label_blood_type"
             android:textStyle="bold" />
 
