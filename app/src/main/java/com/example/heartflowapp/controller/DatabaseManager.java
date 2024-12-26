@@ -48,7 +48,7 @@ public class DatabaseManager {
                 .addOnSuccessListener(d -> {
                     if (d.exists()) {
                         T retrievedObject = d.toObject(obj);
-//                        // Handle convert blood type
+                        // Handle convert blood type
                         if (retrievedObject instanceof Donor) {
                             Donor donor = (Donor) retrievedObject;
                             String bloodTypeText = d.getString("type");

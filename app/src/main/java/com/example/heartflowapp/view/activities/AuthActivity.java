@@ -147,7 +147,6 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
                                 handleSave("user", user.getUid(), newUser);
                             }
                         }
-                        // TODO: Navigate to next activity
                         Toast.makeText(AuthActivity.this, "Sign up successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         // If sign in fails, display a message to the user.
@@ -177,6 +176,7 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
                             db = new DatabaseManager();
                             // Get the user's role
                             db.getOneField("user", user.getUid(), new DatabaseManager.FetchCallBack<>() {
+
                                 @Override
                                 public void onSuccess(Map<String, Object> data) {
                                     String role = (String) data.get("role");
@@ -185,14 +185,13 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
                                         Toast.makeText(AuthActivity.this, "Role not found!", Toast.LENGTH_SHORT).show();
                                         return;
                                     }
-
                                     // Fetch the correct object based on the role
                                     navigateToHome(role, user.getUid());
                                 }
 
                                 @Override
                                 public void onFailure(String message) {
-                                    Toast.makeText(AuthActivity.this, "Failed to fetch user role: " + message, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AuthActivity.this, "User " + user.getUid() , Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -282,6 +281,20 @@ public class AuthActivity extends AppCompatActivity implements AuthListener {
                 @Override
                 public void onFailure(String message) {
                     Toast.makeText(AuthActivity.this, "Failed to fetch manager: " + message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if (role.equalsIgnoreCase("admin")){
+            db.get("user", uid, User.class, new DatabaseManager.FetchCallBack<>() {
+                @Override
+                public void onSuccess(User admin) {
+                    Intent intent = new Intent(AuthActivity.this, SuperUserActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(String message) {
+                    Toast.makeText(AuthActivity.this, "Failed to fetch admin: " + message, Toast.LENGTH_SHORT).show();
                 }
             });
         }

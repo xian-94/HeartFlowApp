@@ -20,7 +20,8 @@ import com.example.heartflowapp.model.SiteManager;
 import com.example.heartflowapp.view.fragments.manager.ManagerProfileFragment;
 import com.example.heartflowapp.view.fragments.manager.SiteFormFragment;
 import com.example.heartflowapp.view.fragments.manager.ManagerDashboardFragment;
-import com.example.heartflowapp.view.ui.MapsFragment;
+import com.example.heartflowapp.view.fragments.manager.ManagerMapFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
             } else if (item.getItemId() == R.id.manager_map) {
                 Bundle bundle = new Bundle();
                 bundle.putString("USER", currentUserId);
-                MapsFragment map = new MapsFragment();
+                ManagerMapFragment map = new ManagerMapFragment();
                 map.setArguments(bundle);
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -123,6 +124,7 @@ public class ManagerActivity extends AppCompatActivity implements SiteFormFragme
 
     public void logout() {
         // Navigate back to main
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(ManagerActivity.this, MainActivity.class);
         // Clear back stack
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

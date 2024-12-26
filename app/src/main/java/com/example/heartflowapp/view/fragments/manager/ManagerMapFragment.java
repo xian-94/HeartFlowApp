@@ -1,4 +1,4 @@
-package com.example.heartflowapp.view.fragments.donor;
+package com.example.heartflowapp.view.fragments.manager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,7 +10,12 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +37,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
+public class ManagerMapFragment extends Fragment implements OnMapReadyCallback {
     private static final String ARG_USER = "USER";
     private static final int LOCATION_REQUEST_CODE = 1001;
 
@@ -63,7 +69,7 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
             public boolean onQueryTextSubmit(String query) {
                 String location = mapSearch.getQuery().toString();
                 if (!location.isEmpty()) {
-                    searchSites(location);
+                    searchLocation(location);
                 }
                 return true;
             }
@@ -77,44 +83,43 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-    private void searchSites(String query) {
-        List<Site> filteredSites = new ArrayList<>();
-        for (Site site : siteList) {
-            if (site.getName().toLowerCase().contains(query.toLowerCase())) {
-                filteredSites.add(site);
+
+    private void searchLocation(String location) {
+        Geocoder geocoder = new Geocoder(requireContext());
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(location, 1);
+            if (!addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                addMarker(latLng, address.getAddressLine(0), false);
             }
+        } catch (IOException e) {
+            Toast.makeText(requireContext(), "Location not found", Toast.LENGTH_SHORT).show();
         }
-        updateMarkers(filteredSites);
     }
 
-
-    private void addMarker(LatLng latLng, Site site) {
+    private void addMarker(LatLng latLng, String address, boolean isExistingSite) {
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
-                .title(site.getName())
-                .snippet("Address: " + site.getAddress())
-                .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromDrawable(R.drawable.marker))
+                .title(isExistingSite ? "Site Details" : "Create Site")
+                .snippet(address)
+                .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromDrawable(R.drawable.marker, isExistingSite))
                 );
         Marker marker = googleMap.addMarker(markerOptions);
-        marker.setTag(site);
+        marker.setTag(isExistingSite ? findSiteByLatLng(latLng) : null);
     }
 
-
-    private void updateMarkers(List<Site> filteredSites) {
-        googleMap.clear();
-        for (Site site : filteredSites) {
-            LatLng latLng = new LatLng(site.getLatitude(), site.getLongitude());
-            addMarker(latLng, site);
-        }
-    }
-
-
-    private Bitmap getBitmapFromDrawable(int resId) {
+    private Bitmap getBitmapFromDrawable(int resId, boolean isExisting) {
         Bitmap bitmap = null;
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), resId, null);
         if (drawable != null) {
             bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
+            // Change color of the marker if the location doesn't exist
+            if (!isExisting) {
+                drawable.setColorFilter(new PorterDuffColorFilter(Color.parseColor("#9694FF"), PorterDuff.Mode.SRC_IN));
+            }
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
 
@@ -154,12 +159,14 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
             Object tag = marker.getTag();
             if (tag instanceof Site) {
                 openDetails((Site) tag);
+            } else {
+                openSiteForm(marker.getPosition(), marker.getSnippet());
             }
             return true;
         });
     }
 
-    // Fetch site list from database (only the active one)
+    // Fetch site list from database
     private void loadSites() {
         String userId = getArguments().getString(ARG_USER);
         if (userId != null) {
@@ -167,7 +174,8 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
         }
         DatabaseManager db = new DatabaseManager();
         db.getRef("site")
-                .whereEqualTo("status", "active")
+                .whereEqualTo("status", "ACTIVE")
+                .whereEqualTo("createdBy", user)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     siteList.clear();
@@ -175,7 +183,7 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
                         Site site = document.toObject(Site.class);
                         site.setSiteId(document.getId());
                         siteList.add(site);
-                        addMarker(new LatLng(site.getLatitude(), site.getLongitude()), site);
+                        addMarker(new LatLng(site.getLatitude(), site.getLongitude()), site.getAddress(), true);
                     }
                     // Set camera position after loading sites
                     LatLng initialLatLng;
@@ -190,9 +198,17 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
                 });
     }
 
+    private void openSiteForm(LatLng latLng, String address) {
+        SiteFormFragment fragment = SiteFormFragment.newInstance(latLng.latitude, latLng.longitude, address);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.manager_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
 
     private void openDetails(Site site) {
-        DonorSiteDetailsFragment fragment = DonorSiteDetailsFragment.newInstance(site, user);
+        SiteDetailsFragment fragment = SiteDetailsFragment.newInstance(site, user);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.manager_container, fragment)

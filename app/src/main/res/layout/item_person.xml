@@ -3,21 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="5dp"
     android:layout_margin="10dp"
-    android:padding="16dp"
-    app:cardCornerRadius="8dp">
-
+    app:cardCornerRadius="20dp"
+    android:background="?attr/selectableItemBackground">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="20dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="200dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Name"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Date"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
         <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:id="@+id/blood"
+            android:layout_marginTop="2dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Donor Name"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:text="A+"
+            android:padding="8dp"
+            android:textColor="@drawable/text_selector"
+           android:background="@drawable/box_normal" />
 
     </LinearLayout>
+
+
+
 </androidx.cardview.widget.CardView>

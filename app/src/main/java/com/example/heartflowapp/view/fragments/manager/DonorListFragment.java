@@ -16,7 +16,6 @@ import com.example.heartflowapp.R;
 import com.example.heartflowapp.controller.DatabaseManager;
 import com.example.heartflowapp.model.Donor;
 import com.example.heartflowapp.view.adapters.DonorAdapter;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,7 @@ public class DonorListFragment extends Fragment {
 
     private static final String ARG_SITE = "SITE";
     private String siteId;
+    private DonorAdapter donorAdapter;
     private final List<Donor> donorList = new ArrayList<>();
 
     public static DonorListFragment newInstance(String siteId) {
@@ -39,11 +39,9 @@ public class DonorListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_donor_list, container, false);
-
         RecyclerView recyclerView = view.findViewById(R.id.donor_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        DonorAdapter donorAdapter = new DonorAdapter(donorList);
+        donorAdapter = new DonorAdapter(donorList);
         recyclerView.setAdapter(donorAdapter);
 
         if (getArguments() != null) {
@@ -56,18 +54,44 @@ public class DonorListFragment extends Fragment {
 
     private void fetchDonors() {
         DatabaseManager db = new DatabaseManager();
-        db.getRef("site").document(siteId).collection("donors")
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    donorList.clear();
-                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                        Donor donor = document.toObject(Donor.class);
-                        donorList.add(donor);
-                    }
 
+        // Fetch donor IDs from the site document
+        db.getRef("site").document(siteId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> donorIds = (List<String>) documentSnapshot.get("donors");
+                        if (donorIds != null && !donorIds.isEmpty()) {
+                            fetchDonorObjs(donorIds);
+                        } else {
+                            Toast.makeText(getContext(), "No donors found for this site", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Failed to fetch donors", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Failed to fetch site data", Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    private void fetchDonorObjs(List<String> donorIds) {
+        DatabaseManager db = new DatabaseManager();
+        donorList.clear();
+
+        for (String donorId : donorIds) {
+            db.getRef("donor").document(donorId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            Donor donor = documentSnapshot.toObject(Donor.class);
+                            if (donor != null) {
+                                donorList.add(donor);
+                                donorAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getContext(), "Failed to fetch donor: " + donorId, Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 }

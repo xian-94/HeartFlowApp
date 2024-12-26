@@ -78,4 +78,10 @@
     <string name="label_volunteer_events">Volunteer Events</string>
     <string name="label_past_events">My Past Events</string>
 
+    <!-- Admin view label -->
+    <string name="label_total_managers">Total Managers</string>
+    <string name="label_successful_events">Complete Drives</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heartflowapp.R;
+import com.example.heartflowapp.model.BloodType;
 import com.example.heartflowapp.model.Donor;
 
 import java.util.List;
@@ -33,6 +34,8 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.DonorViewHol
     public void onBindViewHolder(@NonNull DonorViewHolder holder, int position) {
         Donor donor = donorList.get(position);
         holder.name.setText(donor.getFullName());
+        holder.blood.setText(BloodType.toString(donor.getType()));
+        holder.phone.setText(donor.getPhone());
     }
 
     @Override
@@ -41,11 +44,13 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.DonorViewHol
     }
 
     public static class DonorViewHolder extends RecyclerView.ViewHolder {
-        TextView name, phone;
+        TextView name, phone, blood;
 
         public DonorViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
+            phone = itemView.findViewById(R.id.phone);
+            blood = itemView.findViewById(R.id.blood);
         }
     }
 }

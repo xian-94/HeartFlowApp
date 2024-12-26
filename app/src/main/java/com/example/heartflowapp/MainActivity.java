@@ -1,6 +1,5 @@
 package com.example.heartflowapp;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -12,7 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.heartflowapp.view.activities.AuthActivity;
-import com.example.heartflowapp.view.ui.MapsFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 

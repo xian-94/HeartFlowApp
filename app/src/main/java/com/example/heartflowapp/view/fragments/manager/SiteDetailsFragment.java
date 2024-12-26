@@ -87,6 +87,16 @@ public class SiteDetailsFragment extends Fragment {
             if (site.getStatus().equalsIgnoreCase("COMPLETE")) {
                 siteStatus.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.text_complete));
                 siteStatus.setTextColor(Color.parseColor("#507687"));
+                volunteerBtn.setClickable(false);
+                volunteerBtn.setEnabled(false);
+                volunteerBtn.setBackgroundColor(Color.parseColor("#A1D6CB"));
+                volunteerBtn.setTextColor(Color.parseColor("#507687"));
+                // Disable button
+                endDriveBtn.setClickable(false);
+                endDriveBtn.setEnabled(false);
+                endDriveBtn.setBackgroundColor(Color.parseColor("#A1D6CB"));
+                endDriveBtn.setTextColor(Color.parseColor("#507687"));
+
             }
 
         }
@@ -144,6 +154,7 @@ public class SiteDetailsFragment extends Fragment {
                 ProgressManager.dismissProgress();
                 // Disable the button after clicked
                 volunteerBtn.setClickable(false);
+                volunteerBtn.setEnabled(false);
                 volunteerBtn.setBackgroundColor(Color.parseColor("#A1D6CB"));
                 volunteerBtn.setTextColor(Color.parseColor("#507687"));
             }
@@ -246,6 +257,7 @@ public class SiteDetailsFragment extends Fragment {
                     site.setStatus("COMPLETE");
                     site.setRequiredBloodTypes(collectedData);
                     // Disable button
+                    saveBtn.setEnabled(false);
                     saveBtn.setClickable(false);
                     saveBtn.setBackgroundColor(Color.parseColor("#A1D6CB"));
                     saveBtn.setTextColor(Color.parseColor("#507687"));

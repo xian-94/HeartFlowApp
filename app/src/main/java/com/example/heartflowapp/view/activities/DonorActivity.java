@@ -16,6 +16,7 @@ import com.example.heartflowapp.model.Donor;
 import com.example.heartflowapp.view.fragments.donor.DonorDashboardFragment;
 import com.example.heartflowapp.view.fragments.donor.DonorMapFragment;
 import com.example.heartflowapp.view.fragments.donor.DonorProfileFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class DonorActivity extends AppCompatActivity {
     ActivityDonorBinding binding;
@@ -72,6 +73,7 @@ public class DonorActivity extends AppCompatActivity {
 
     public void logout() {
         // Navigate back to main
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(DonorActivity.this, MainActivity.class);
         // Clear back stack
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
