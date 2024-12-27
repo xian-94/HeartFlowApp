@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.example.heartflowapp.R;
 import com.example.heartflowapp.controller.DatabaseManager;
 import com.example.heartflowapp.model.Site;
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -68,7 +70,6 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-
 
 
         // Handle search location query
@@ -113,7 +114,6 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
                 .addOnSuccessListener(location -> {
                     if (location != null) {
                         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
                         // Optionally add a marker for the user's location
                         googleMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here")
                                 .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromDrawable(R.drawable.icon_user))));
@@ -122,7 +122,6 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
                     }
                 });
     }
-
 
 
     private void addMarker(LatLng latLng, Site site) {
@@ -208,13 +207,8 @@ public class DonorMapFragment extends Fragment implements OnMapReadyCallback {
                     if (!siteList.isEmpty()) {
                         initialLatLng = new LatLng(siteList.get(0).getLatitude(), siteList.get(0).getLongitude());
                     } else {
-                        if (currentLocation != null) {
-                            initialLatLng = currentLocation;
-                        }
-                        else {
-                            // Default to RMIT location
-                            initialLatLng = new LatLng(10.7295137449591, 106.70918280905457);
-                        }
+                        // Default to RMIT location
+                        initialLatLng = new LatLng(10.7295137449591, 106.70918280905457);
                     }
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(initialLatLng, 15);
                     googleMap.animateCamera(cameraUpdate);
